@@ -1,19 +1,36 @@
 # Axisymmetric Parabolic Resolvent Modes
-Work for ESCI-995 (Numerical Ocean Circulation modeling) project inspired by work on identifying streaky structures in boundary layers. Here, using an inner product defined in cylindrical coordinates, and develop new adjoint equations to identify streaky structures behind an axisymmetric wake.
+Work for ESCI-995 (Numerical Ocean Circulation modeling) project inspired by work on identifying streaky structures in boundary layers by [Sasaki, Kenzo and Cavalieri](https://journals.aps.org/prfluids/abstract/10.1103/PhysRevFluids.7.104611). Project as part of a larger effort to understand wake breakdown/interaction in floating offshore windfarm wake arrays. Here, using an inner product defined in cylindrical coordinates, and develop new adjoint equations to identify streaky structures behind an axisymmetric wake. 
+
+Streaks play a significant role in transition to turbulence in boundary layers, as their destruction (a so-called "bursting event") generates significant turbulent kinetic energy. Resolvent analysis is an appropriate tool for study of streak formation, as development is considered non-modal. 
 
 The inner product used is
 
+$$
+{\langle q, q \rangle_q = \int_0^{x_f}\int_0^{\infty} \mathbf{\overline{q}}\mathbf{q}rdrdx}
+$$
 
-![equation](https://latex.codecogs.com/svg.image?%7B%5Ccolor%7BTeal%7D%5Cint_%7B0%7D%5E%7Bx_f%7D%5Cint_%7B0%7D%5E%7B%5Cinfty%7D%5Coverline%7B%5Cmathbf%7Bq%7D%7D%5Cmathbf%7Bq%7Drdrdx%7D)
+and
 
-and the linearized cylindrical incompressible Navier-Stokes equations
+$$
+{\nabla \cdot \mathbf{u} = 0}
+$$
 
-![equation](https://latex.codecogs.com/svg.image?%7B%5Ccolor%7BTeal%7D%5Cnabla%5Ccdot%5Cmathbf%7Bu%7D=0%7D)
+$$
+{\partial_t \mathbf{u'} + W\partial_z \mathbf{u'} + \nabla p' - \frac{1}{Re_\delta}\nabla^2 \mathbf{u'} = \mathbf{f'}}
+$$
 
-![equation](https://latex.codecogs.com/svg.image?%7B%5Ccolor%7BTeal%7D%5Cpartial_t%5Cmathbf%7Bu%7D&plus;W%5Cpartial_z%5Cmathbf%7Bu%7D&plus;%5Cnabla%20p-%5Cfrac%7B1%7D%7BRe_%5Cdelta%7D%5Cnabla%5E2%5Cmathbf%7Bu%7D=0%7D)
+which are Orr-Somerfeld-like equations in axisymmetric coordinates, derived from a boundary-layer like asymptotic reduction, with additional forcings representing non-linear q'q' interactions.
 
-which are Orr-Somerfeld-like equations in axisymmetric coordinates. The axial base flow, W(r,z), is a wake taken from a seperate simulation whose data can be found at this link.
+The axial base flow, W(r,z), is a wake taken from a seperate simulation whose data can be found at this link.
 
-We perform a Fourier transform in the time and azimuthal coordinates
+We perform a Fourier transform in the time and azimuthal coordinates of the forcings and responses:
 
-![equation](https://latex.codecogs.com/svg.image?%7B%5Ccolor%7BTeal%7D%5Cmathbf%7Bq%7D(r,%5Cphi,z,t)=%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%5Cint_%7B0%7D%5E%7B2%5Cpi%7D%5Chat%7B%5Cmathbf%7Bq%7D%7D(r,z)%5Cexp(i(m%5Cphi-%5Comega%20t))d%5Comega%20dm%7D)
+$$
+\mathbf{f'}(r,\phi,z,t) = \int_0^{2\pi} \int_{-\infty}^{\infty} \mathbf{\hat{f}}(r,z)dm d\omega
+$$
+
+$$
+\mathbf{q'}(r,\phi,z,t) = \int_0^{2\pi} \int_{-\infty}^{\infty} \mathbf{\hat{q}}(r,z)dm d\omega.
+$$
+
+and maximize the gain according to the numerical procedure outlined in [Sasaki, Kenzo and Cavalieri](https://journals.aps.org/prfluids/abstract/10.1103/PhysRevFluids.7.104611). In our case, the adjoint equations are different, owing to the addition weight "r" appearing in the inner product.
